@@ -1,0 +1,63 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: beats-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beats-demo
+  template:
+    metadata:
+      labels:
+        app: beats-demo
+    spec:
+      containers:
+      - image: adamquan/beats-demo-app
+        imagePullPolicy: Always
+        name: app
+        resources:
+          limits:
+            cpu: 200m
+        env:
+        # See https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
+        - name: APM_SERVER_HOST 
+          valueFrom:
+            fieldRef:
+              #fieldPath: spec.nodeName
+              fieldPath: status.hostIP
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: beats-demo
+              key: MYSQL_PASSWORD
+        ports:
+        # Assign a name to the port so that we can refer to it by name in the service.
+        # Named ports enables us to change the port number later without having to 
+        # change the service spec
+        - name: app-port 
+          containerPort: 8081
+---
+# Create tables on first run
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: beats-demo-app-init
+spec:
+  activeDeadlineSeconds: 300
+  template:
+    metadata:
+      labels:
+        app: beats-demo
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: app
+        image: adamquan/beats-demo-app
+        command: ["django-admin",  "migrate"]
+        env:
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: beats-demo
+              key: MYSQL_PASSWORD
