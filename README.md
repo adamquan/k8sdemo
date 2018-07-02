@@ -5,5 +5,11 @@
 3. Deploy everyting using the following command: kubectl apply -f .
 
 Demo Architecture:
+-----------------
 
 ![Demo Architecture](images/scenario.png "Demo Architecture")
+
+Example Dashboard:
+-----------------
+
+![Example Dashboard](images/dashboard1.png "Example Dashboard")
