@@ -13,3 +13,5 @@ Example Dashboard:
 -----------------
 
 ![Example Dashboard](images/dashboard1.png "Example Dashboard")
+
+![Example Dashboard](images/dashboard2.png "Example Dashboard")
