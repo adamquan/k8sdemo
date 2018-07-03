@@ -1,0 +1,105 @@
+apiVersion: apps/v1beta2 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+      # Kubernetes annotations to “hint” to the Beats how the new deployment should be monitored
+      annotations: 
+        co.elastic.logs/module: nginx
+        co.elastic.logs/fileset.stdout: access
+        co.elastic.logs/fileset.stderr: error        
+        co.elastic.metrics/module: nginx
+        co.elastic.metrics/period: 10s
+        co.elastic.metrics/metricsets: stubstatus # Need to make sure stub_status is enabled on nginx
+        co.elastic.metrics/hosts: "${data.host}:80"
+    spec:
+      containers:
+      - name: nginx
+        image: adamquan/beats-demo-nginx
+        # Assign a name to the port so that we can refer to it by name in the service.
+        # Named ports enables us to change the port number later without having to 
+        # change the service spec
+        ports:
+        - name: nginx-port 
+          containerPort: 80
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+      volumes:
+      - name: config
+        configMap:
+          defaultMode: 0600
+          name: nginx-config
+---
+apiVersion: v1
+kind: ConfigMap  # Custom nginx configuration file, to enable stub_status, not enabled by default.
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |-
+    worker_processes 1;
+
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        include    /etc/nginx/mime.types;
+        sendfile on;
+        client_max_body_size 1M;
+
+        # Configuration containing list of application servers
+        upstream uwsgicluster {
+            server beats-demo:80;
+        }
+
+        # Configuration for Nginx
+        server {
+            # error_log /var/log/nginx/error.log debug;
+
+            # Running port
+            listen 80;
+            # server_name  localhost;
+
+            # Serve static files
+            location /static/ {
+              root /usr/share/nginx/html/;
+              autoindex off;
+            }
+
+            # Proxy connections to application server
+            location / {
+                include uwsgi_params;
+                uwsgi_pass uwsgicluster;
+
+                uwsgi_param Host $host;
+                uwsgi_param X-Real-IP $remote_addr;
+                uwsgi_param X-Forwarded-For $proxy_add_x_forwarded_for;
+                uwsgi_param X-Forwarded-Proto $http_x_forwarded_proto;
+            }
+
+            #error_page  404              /404.html;
+
+            # redirect server error pages to the static page /50x.html
+            #
+            error_page   500 502 503 504  /50x.html;
+            location = /50x.html {
+                root   /usr/share/nginx/html;
+            }
+
+            location /server-status {
+              stub_status on;
+              access_log   off;
+              allow all;
+            }
+        }
+    }
