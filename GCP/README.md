@@ -16,8 +16,12 @@ kubectl create clusterrolebinding adam.quan-cluster-admin-binding --clusterrole=
 
 3. Change the secretes in the secretes.yaml file as needed. Make sure you change the host name of the Elasticsearch host and Kibana host to point to your own Elastic Cloud instance. Remember to use the '-n' option during encoding.
 
+```
 echo -n 'STRING-TO-ENCODE' | base64
+```
 
 4. Deploy everyting using the following command. You are good to go!
 
+```
 kubectl apply -f .
+```
