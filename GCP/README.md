@@ -76,5 +76,9 @@ Here is the "APM Transaction" dashboard.
 
 Keep in mind that we do not have APM in the cloud yet. So, you do not see the APM UI from Kibana. However, if you are sending all these data to a local 6.3 cluster, you will have the APM UI.
 
+10. Finally, go to "Discover" and select the "apm-*" index pattern. Notice that some of the entries are tagged with Kubernetes metadata? This is extremly powerful for correlating APM data with Kubernetes infrastructure. Right now, we are achieving this by deploying the APM server as a DamonSet inside Kuberentes. In the future, we will be adding "native" ways to add these metadata.
+
+![Kubernetes Cluster](images/k8s-12.png "Kubernetes Cluster")
+
 
 
