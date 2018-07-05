@@ -1,5 +1,7 @@
 # Oberservable Kuberentes demo using Beats and APM in GCP
 
+We are going to deploy the Python demo application with MySQL backend and Nginx frontend monitored by Filebeat, Metricbeat, Packetbeat and APM into GKE in GCP. Elasticsearch and Kibana are hosted in Elastic Cloud. We assume that you already have your Elastic Cloud cluster setup and ready to go. If not, please refer to Elastic's instructions on how to create an account and setting up your cluster.
+
 1. Create a Kubernetes cluster in GCP using your GCP account. See screenshots below:
 
 Go to the "Kuberentes Engine" page, click on "CREATE CLUSTER":
