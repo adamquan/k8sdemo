@@ -1,0 +1,36 @@
+{% extends "questions/base.html" %} {% block content %}
+
+<script>
+  function vote(vote_url, button_id) {
+    $.get(vote_url)
+      .done(function(data) {
+        // Vote done, hide button
+        $('#' + button_id).hide();
+      })
+      .always(function(data) {
+        // Reload on failure
+        location.reload();
+      });
+    return false;
+  }
+</script>
+
+<h4>Questions</h4>
+<p>This is the list of user submitted questions, sorted by number of votes. You can also <a href="/submit/">add a new question</a>.</p>
+
+{% for question in questions %}
+<div class="card" style="margin-bottom: 20px">
+  <div class="card-body">
+    <a name="{{ question.id }}" />
+    <h4 class="card-title">#{{ forloop.counter }} {{ question.title }}</h4>
+    <h6 class="card-subtitle mb-2 text-muted">
+      {{ question.num_votes }} votes, submitted <em>{{ question.pub_date|timesince}} ago</em> by <strong>{{ question.author }}</strong>
+    </h6> {% if question.id not in votes %}
+    <a id="vote-{{ question.id }}" onclick="return vote('{% url 'questions:vote' question_id=question.id %}', 'vote-{{ question.id }}')" href="{% url 'questions:vote' question_id=question.id %}" class="btn btn-primary float-right" aria-label="Vote up">
+      <span class="fa fa-chevron-up" aria-hidden="true"></span> Vote</a> {% endif %}
+  </div>
+</div>
+{% empty %}
+<div class="alert alert-primary" role="alert">
+  There are no questions yet, do you want to <a href="{% url 'questions:create' %}">submit one</a>?</div>
+{% endfor %} {% endblock content %}
