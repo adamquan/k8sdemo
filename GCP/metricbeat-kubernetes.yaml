@@ -47,6 +47,10 @@ data:
       hosts: ['https://${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}']
       username: ${ELASTICSEARCH_USERNAME}
       password: ${ELASTICSEARCH_PASSWORD}
+    setup.kibana:
+      host: ${KIBANA_HOST}
+      username: ${ELASTICSEARCH_USERNAME}
+      password: ${ELASTICSEARCH_PASSWORD}      
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -312,6 +316,65 @@ spec:
         configMap:
           defaultMode: 0600
           name: metricbeat-deployment-modules
+---
+# Run metricbeat setup
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: metricbeat-setup
+  namespace: kube-system
+spec:
+  activeDeadlineSeconds: 300
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: metricbeat
+        imagePullPolicy: Always
+        image: docker.elastic.co/beats/metricbeat:6.3.0
+        args: [
+          "-c", "/etc/metricbeat.yml",
+          "-e",
+          "setup",
+        ]
+        securityContext:
+          runAsUser: 0
+        env:
+        - name: ELASTICSEARCH_HOST
+          valueFrom:
+            secretKeyRef:
+              name: elastic
+              key: ELASTICSEARCH_HOST
+        - name: ELASTICSEARCH_PORT
+          valueFrom:
+            secretKeyRef:
+              name: elastic
+              key: ELASTICSEARCH_PORT
+        - name: KIBANA_HOST
+          valueFrom:
+            secretKeyRef:
+              name: elastic
+              key: KIBANA_HOST
+        - name: ELASTICSEARCH_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: elastic
+              key: ELASTICSEARCH_USERNAME
+        - name: ELASTICSEARCH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: elastic
+              key: ELASTICSEARCH_PASSWORD
+        volumeMounts:
+        - name: config
+          mountPath: /etc/metricbeat.yml
+          readOnly: true
+          subPath: metricbeat.yml
+      volumes:
+      - name: config
+        configMap:
+          defaultMode: 0600
+          name: metricbeat-config
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
