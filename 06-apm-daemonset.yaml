@@ -22,13 +22,13 @@ data:
 
     output.elasticsearch:
       hosts: ['${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}']
-      username: ${ELASTIC_USERNAME}
-      password: ${ELASTIC_PASSWORD}
+      username: ${ELASTICSEARCH_USERNAME}
+      password: ${ELASTICSEARCH_PASSWORD}
 
     setup.kibana:
       host: ${KIBANA_HOST}
-      username: ${ELASTIC_USERNAME}
-      password: ${ELASTIC_PASSWORD}
+      username: ${ELASTICSEARCH_USERNAME}
+      password: ${ELASTICSEARCH_PASSWORD}
 ---
 apiVersion: extensions/v1beta1
 kind: DaemonSet
@@ -74,16 +74,16 @@ spec:
             secretKeyRef:
               name: elastic
               key: KIBANA_HOST
-        - name: ELASTIC_USERNAME
+        - name: ELASTICSEARCH_USERNAME
           valueFrom:
             secretKeyRef:
               name: elastic
-              key: ELASTIC_USERNAME
-        - name: ELASTIC_PASSWORD
+              key: ELASTICSEARCH_USERNAME
+        - name: ELASTICSEARCH_PASSWORD
           valueFrom:
             secretKeyRef:
               name: elastic
-              key: ELASTIC_PASSWORD
+              key: ELASTICSEARCH_PASSWORD
         securityContext:
           runAsUser: 0
         resources:
@@ -144,16 +144,16 @@ spec:
             secretKeyRef:
               name: elastic
               key: KIBANA_HOST
-        - name: ELASTIC_USERNAME
+        - name: ELASTICSEARCH_USERNAME
           valueFrom:
             secretKeyRef:
               name: elastic
-              key: ELASTIC_USERNAME
-        - name: ELASTIC_PASSWORD
+              key: ELASTICSEARCH_USERNAME
+        - name: ELASTICSEARCH_PASSWORD
           valueFrom:
             secretKeyRef:
               name: elastic
-              key: ELASTIC_PASSWORD
+              key: ELASTICSEARCH_PASSWORD
         securityContext:
           runAsUser: 0
         volumeMounts:
