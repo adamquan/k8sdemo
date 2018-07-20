@@ -26,6 +26,7 @@ data:
       - add_cloud_metadata:
       - add_kubernetes_metadata:
           host: ${HOSTNAME}
+      - add_docker_metadata: ~
 
     output.elasticsearch:
       hosts: ['https://${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}']
@@ -105,6 +106,8 @@ spec:
           subPath: packetbeat.yml
         - name: data
           mountPath: /usr/share/packetbeat/data
+        - name: dockersock
+          mountPath: /var/run/docker.sock                              
       volumes:
       - name: config
         configMap:
@@ -112,6 +115,9 @@ spec:
           name: packetbeat-config
       - name: data
         emptyDir: {}
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock          
 ---
 # Run packetbeat setup
 apiVersion: batch/v1
@@ -169,11 +175,16 @@ spec:
           mountPath: /etc/packetbeat.yml
           readOnly: true
           subPath: packetbeat.yml
+        - name: dockersock
+          mountPath: /var/run/docker.sock          
       volumes:
       - name: config
         configMap:
           defaultMode: 0600
           name: packetbeat-config
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock                    
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding

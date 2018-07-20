@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "96717e10-74ab-11e8-b78a-f5da069587fe",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Beats Demo [Adam]",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"panelIndex\":\"1\",\"gridData\":{\"x\":0,\"y\":5,\"w\":13,\"h\":13,\"i\":\"1\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"id\":\"12d98360-74a9-11e8-b78a-f5da069587fe\",\"title\":\"Pod - Container\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"2\",\"gridData\":{\"x\":0,\"y\":62,\"w\":18,\"h\":18,\"i\":\"2\"},\"embeddableConfig\":{\"mapCenter\":[27.839076094777816,-76.99218750000001],\"mapZoom\":2},\"id\":\"Nginx-Access-Map\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":0,\"y\":32,\"w\":24,\"h\":15,\"i\":\"3\"},\"embeddableConfig\":{},\"id\":\"58e644f0-30d6-11e7-8df8-6d3604a72912\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":24,\"y\":32,\"w\":24,\"h\":15,\"i\":\"4\"},\"embeddableConfig\":{},\"id\":\"a4c9d360-30df-11e7-8df8-6d3604a72912\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"5\",\"gridData\":{\"x\":0,\"y\":47,\"w\":24,\"h\":15,\"i\":\"5\"},\"embeddableConfig\":{},\"id\":\"MySQL-Methods\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"6\",\"gridData\":{\"x\":24,\"y\":47,\"w\":24,\"h\":15,\"i\":\"6\"},\"embeddableConfig\":{},\"id\":\"Mysql-response-times-percentiles\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"7\",\"gridData\":{\"x\":18,\"y\":62,\"w\":29,\"h\":9,\"i\":\"7\"},\"embeddableConfig\":{},\"id\":\"09bcf890-7822-11e7-8c47-65b845b5cfb3\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"8\",\"gridData\":{\"x\":18,\"y\":71,\"w\":30,\"h\":9,\"i\":\"8\"},\"embeddableConfig\":{},\"id\":\"a2e199b0-7820-11e7-8c47-65b845b5cfb3\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"9\",\"gridData\":{\"x\":13,\"y\":5,\"w\":35,\"h\":13,\"i\":\"9\"},\"embeddableConfig\":{},\"id\":\"4932f2f0-8068-11e8-94e5-654f478902e0\",\"title\":\"APM Data & Kubernetes\",\"type\":\"search\",\"version\":\"6.3.0\"},{\"title\":\"Namespace/Node/Pod/Container Name Control\",\"panelIndex\":\"10\",\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":5,\"i\":\"10\"},\"embeddableConfig\":{},\"id\":\"aad29b80-84bb-11e8-94e5-654f478902e0\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"title\":\"Kuberentes Logs\",\"panelIndex\":\"11\",\"gridData\":{\"x\":0,\"y\":18,\"w\":48,\"h\":14,\"i\":\"11\"},\"embeddableConfig\":{},\"id\":\"bfedaf30-85da-11e8-94e5-654f478902e0\",\"type\":\"search\",\"version\":\"6.3.0\"}]",
+      "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[{\"meta\":{\"index\":\"d8a441d0-8588-11e8-94e5-654f478902e0\",\"controlledBy\":\"1531403278033\",\"type\":\"phrase\",\"key\":\"kubernetes.namespace\",\"value\":\"default\",\"params\":{\"query\":\"default\",\"type\":\"phrase\"},\"disabled\":false,\"negate\":false,\"alias\":null},\"query\":{\"match\":{\"kubernetes.namespace\":{\"query\":\"default\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlightAll\":true,\"version\":true}"
+      }
+    }
+  }
+]

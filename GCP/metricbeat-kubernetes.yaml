@@ -39,6 +39,7 @@ data:
 
     processors:
       - add_cloud_metadata:
+      - add_docker_metadata: ~
 
     cloud.id: ${ELASTIC_CLOUD_ID}
     cloud.auth: ${ELASTIC_CLOUD_AUTH}
@@ -307,6 +308,8 @@ spec:
         - name: modules
           mountPath: /usr/share/metricbeat/modules.d
           readOnly: true
+        - name: dockersock
+          mountPath: /var/run/docker.sock
       volumes:
       - name: config
         configMap:
@@ -316,6 +319,9 @@ spec:
         configMap:
           defaultMode: 0600
           name: metricbeat-deployment-modules
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock          
 ---
 # Run metricbeat setup
 apiVersion: batch/v1
@@ -370,11 +376,16 @@ spec:
           mountPath: /etc/metricbeat.yml
           readOnly: true
           subPath: metricbeat.yml
+        - name: dockersock
+          mountPath: /var/run/docker.sock                    
       volumes:
       - name: config
         configMap:
           defaultMode: 0600
           name: metricbeat-config
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock          
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding

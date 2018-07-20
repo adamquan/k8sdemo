@@ -14,11 +14,12 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
 spec:
+  storageClassName: standard
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi
+      storage: 2Gi
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
